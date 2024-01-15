@@ -1,0 +1,10 @@
+USER:
+
+    firstName
+    lastName
+    birthdate
+    age
+    sex
+    adress
+    zipCode
+    town
