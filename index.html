@@ -1,37 +1,124 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Json, AJAX and Promise C3</title>
 </head>
+
 <body>
     <h1>EXERCISE C3</h1>
+
+    <!-- ################################ formulaire AJAX -->
+    <div id="user">
+        <form id="userForm">
+            <input required type="text" name="lName" placeholder="your last name">            
+            <input type="number" name="age" placeholder="how old are you?">            
+            <button type="submit"> SUBMIT FORM</button>
+            <span id="error" style="color: red;"></span>
+        </form>
+    </div>
     <script src="\node_modules\jquery\dist\jquery.js"></script>
+    <script src="\node_modules\q\q.js"></script>
+    <script>
+         var form = $('#userForm'); //cable le formulaire dans jquery
+         var error = $('#error'); //cable le span error dans jquery
+         var url = "http://exercicec3/user.json";
+         
+        /*
+         retourne la collection pour la prochaine Promise
+        */
+         var successCallback = function (collection) {
+            console.log('dans la function callback');
+            console.log(collection);
+            console.log(typeof(collection));
+            return(collection);
+         }
+         
+         /*
+         retourne l'item de la collection pour la prochaine Promise
+        */
+         var displayItem = function (collection) {            
+            var item = collection[0];
+            return(item);
+         }
+
+         /*
+         retourne la string de age pour la prochaine Promise
+        */
+         var displayName = function (item) {           
+            console.log(item.first_name);
+            return(item.age)
+         }
+         
+         var displayAge = function (age) {
+            console.log(age);
+            console.log(item);
+         }
+
+         var errorCallback = function (response) {
+            error.append(response.responseText);
+            console.log(response);
+         }
+                  
+         
+         var getOptions = {
+            method: "POST",
+            async: true,
+            cache: false,
+            // les callbacks sont gerés par les promises
+            //success: successCallback, //passe les datas dans la fonction "successCallback = function (response)"
+            //error: errorCallback
+        }; // cree un objet contenant les options de ajax()
+
+         form.on("submit",function (e) {
+            e.preventDefault();
+            getOptions.data = $(this).serialize();
+
+            $
+                .ajax(url,getOptions) // lance la request
+                // debut des promises
+                .done(successCallback)//callback sur success(return(collection) pour la prochaine promise)
+                .then(displayItem)// enchainement (return(item)"collection[0]" pour la prochaine promise)
+                .then(displayName)// return(age) "item.age"
+                .then(displayAge)
+                .fail(errorCallback) //lance errorCallback en cas d'erreur
+         });
+
+    </script>
 
     <!-- ###############################################requete manuelle HTTPREQUEST
-    <script>
-        // cree un objet XMLHTTPREQUEST: 
-        var req = new XMLHttpRequest(); 
-        // ouvre une URL avec la methode OPEN( verb rest , url , async true/false)
-        // get recupere, post publie, put mets a jour, delete supprime
-        req.open('GET', 'http://exercicec3/user.json', false);
-        // asynchrone req.open('GET', 'http:exercicec3/user.json'); 
-        // mais attend un callback
+        <script>
+            // cree un objet XMLHTTPREQUEST: 
+            var req = new XMLHttpRequest(); 
+            // ouvre une URL avec la methode OPEN( verb rest , url , async true/false)
+            // get recupere, post publie, put mets a jour, delete supprime
+            req.open('GET', 'http://exercicec3/user.json', false);
+            // asynchrone req.open('GET', 'http:exercicec3/user.json'); 
+            // mais attend un callback
+            
+            
+            // envoi de données ici set a false
+            req.send(null);
+            
+            if (req.status === 200) {
+                console.log("reponse reçue: %s ", req.responseText);
+            } else{
+                console.log("status reponse: %d (%s) ",  req.status ,req.statusText)
+            }
+            
+            
+        </script> 
+        ##################################################################################-->
 
-
-        // envoi de données ici set a false
-        req.send(null);
-
-        if (req.status === 200) {
-            console.log("reponse reçue: %s ", req.responseText);
-        } else{
-            console.log("status reponse: %d (%s) ",  req.status ,req.statusText)
-        }
-
-
-    </script> 
-    ##################################################################################-->
+    <!-- JQUERY
+            ############################################TEST POUR VERIFIER LA PRESENCE DE jquery
     
+        <div id="user"></div>
+        <script src="\node_modules\jquery\dist\jquery.js"></script>
+        <script> console.log($);</script> -->
+
 </body>
+
 </html>
