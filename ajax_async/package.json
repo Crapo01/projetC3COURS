@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "q": "^1.5.1"
+  },
+  "name": "EPSIPROJECTdynamicC3",
+  "version": "1.0.0",
+  "description": "fil rouge C3",
+  "main": "index.js",
+  "repository": "https://github.com/Crapo01/projetC3COURS.git",
+  "author": "Crapo2 <luc.pastry@hotmail.fr>",
+  "license": "MIT",
+  "private": false
+}
